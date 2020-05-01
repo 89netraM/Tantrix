@@ -42,6 +42,7 @@ namespace Tantrix
 		/// The number of steps the tile should be rotated [0, 6).
 		/// </param>
 		/// <exception cref="InvalidOperationException"/>
+		/// <exception cref="InvalidPositionException"/>
 		/// <exception cref="ArgumentNullException"/>
 		public Board PlaceTile(Tile tile, Position position, int rotation)
 		{
@@ -50,7 +51,47 @@ namespace Tantrix
 				throw new InvalidOperationException("Can not place a tile on top of another already place tile.");
 			}
 
-			return new Board(Tiles.Add(position, new PlacedTile(tile, rotation)));
+			PlacedTile newTile = new PlacedTile(tile, rotation);
+
+			ReadOnlyMemory<Color> limits = GetLimitsFor(position);
+			Color combinedLimits = (Color)0b1111;
+			for (int i = 0; i < 6; i++)
+			{
+				combinedLimits ^= limits.Span[i];
+
+				if ((newTile.GetSide(i) & limits.Span[i]) == 0)
+				{
+					throw new InvalidPositionException("Must color match when placing tiles.");
+				}
+			}
+			if (Tiles.Count > 0 && combinedLimits == (Color)0b1111)
+			{
+				throw new InvalidPositionException("Must place tiles adjacent to atleast one existing tile.");
+			}
+
+			return new Board(Tiles.Add(position, newTile));
+		}
+
+		/// <summary>
+		/// Returns the limits on tiles placed a the specified position.
+		/// </summary>
+		/// <param name="position">The position to get the limits of.</param>
+		public ReadOnlyMemory<Color> GetLimitsFor(Position position)
+		{
+			Color[] limits = new Color[6];
+			ReadOnlySpan<Position> neighbours = position.GetSurroundingPositions().Span;
+
+			for (int i = 0; i < 6; i++)
+			{
+				limits[i] = (Color)0b1111;
+
+				if (Tiles.TryGetValue(neighbours[i], out PlacedTile neighbourTile))
+				{
+					limits[i] &= neighbourTile.GetSide((i + 3) % 6);
+				}
+			}
+
+			return limits;
 		}
 	}
 }

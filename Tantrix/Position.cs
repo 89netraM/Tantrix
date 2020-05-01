@@ -42,6 +42,23 @@ namespace Tantrix
 			Z = z;
 		}
 
+		/// <summary>
+		/// Returns the six positions surrounding this position. In clockwise
+		/// order starting at the top.
+		/// </summary>
+		public ReadOnlyMemory<Position> GetSurroundingPositions()
+		{
+			return new[]
+			{
+				new Position(X, Y + 1, Z - 1),
+				new Position(X + 1, Y, Z - 1),
+				new Position(X + 1, Y - 1, Z),
+				new Position(X, Y - 1, Z + 1),
+				new Position(X - 1, Y, Z + 1),
+				new Position(X - 1, Y + 1, Z)
+			};
+		}
+
 		/// <inheritdoc/>
 		public override bool Equals(object obj)
 		{

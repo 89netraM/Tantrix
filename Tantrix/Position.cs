@@ -26,11 +26,15 @@ namespace Tantrix
 		/// <param name="x">The X-coordinate.</param>
 		/// <param name="y">The Y-coordinate.</param>
 		/// <param name="z">The Z-coordinate.</param>
+		/// <exception cref="InvalidCoordinatesException">
+		/// The sum of the coordinates (x + y + x) must equal 0 or an exception
+		/// is thrown.
+		/// </exception>
 		public Position(int x, int y, int z)
 		{
 			if (x + y + z != 0)
 			{
-				throw new ArgumentException("The sum of the coordinates (x + y + x) must equal 0.");
+				throw new InvalidCoordinatesException("The sum of the coordinates (x + y + x) must equal 0.");
 			}
 
 			X = x;

@@ -31,6 +31,7 @@ namespace Tantrix
 		/// <param name="rotation">
 		/// The number of steps the tile should be rotated.
 		/// </param>
+		/// <exception cref="ArgumentNullException"/>
 		public PlacedTile(ITile baseTile, int rotation)
 		{
 			BaseTile = baseTile ?? throw new ArgumentNullException(nameof(baseTile));

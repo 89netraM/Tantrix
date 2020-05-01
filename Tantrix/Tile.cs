@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Tantrix
 {
@@ -117,6 +117,7 @@ namespace Tantrix
 		/// Provide the colors of the six sides of the new tile in clockwise
 		/// order.
 		/// </param>
+		/// <exception cref="ArgumentException"/>
 		public Tile(ReadOnlyMemory<Color> sides)
 		{
 			if (sides.Length != 6)

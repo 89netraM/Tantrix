@@ -25,6 +25,7 @@ namespace Tantrix
 		/// Initializes a bord with a certain setup.
 		/// </summary>
 		/// <param name="tiles">The starting setup with tiles.</param>
+		/// <exception cref="ArgumentNullException"/>
 		private Board(IImmutableDictionary<Position, PlacedTile> tiles)
 		{
 			Tiles = tiles ?? throw new ArgumentNullException(nameof(tiles));
@@ -40,6 +41,8 @@ namespace Tantrix
 		/// <param name="rotation">
 		/// The number of steps the tile should be rotated [0, 6).
 		/// </param>
+		/// <exception cref="InvalidOperationException"/>
+		/// <exception cref="ArgumentNullException"/>
 		public Board PlaceTile(Tile tile, Position position, int rotation)
 		{
 			if (Tiles.ContainsKey(position))

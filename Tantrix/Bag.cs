@@ -13,7 +13,7 @@ namespace Tantrix
 		/// <summary>
 		/// A list of all the tiles in this bag, and maybe some outside it.
 		/// </summary>
-		private ReadOnlyMemory<Tile> Tiles { get; }
+		private ReadOnlyMemory<ITile> Tiles { get; }
 
 		/// <summary>
 		/// The number of tiles left in this bag.
@@ -25,14 +25,14 @@ namespace Tantrix
 		/// <paramref name="tiles"/>.
 		/// </summary>
 		/// <param name="tiles">The tiles in the new bag.</param>
-		public Bag(ReadOnlyMemory<Tile> tiles) : this(tiles, 0) { }
+		public Bag(ReadOnlyMemory<ITile> tiles) : this(tiles, 0) { }
 		/// <summary>
 		/// Initializes a bag discarding some tiles a the begining of
 		/// <paramref name="tiles"/>.
 		/// </summary>
 		/// <param name="tiles">The tiles in the bag.</param>
 		/// <param name="discardedTiles">The number of discarded tiles.</param>
-		private Bag(ReadOnlyMemory<Tile> tiles, int discardedTiles)
+		private Bag(ReadOnlyMemory<ITile> tiles, int discardedTiles)
 		{
 			Tiles = tiles;
 			DiscardedTiles = discardedTiles;
@@ -45,7 +45,7 @@ namespace Tantrix
 		/// <returns>
 		/// A tuple with the removed tile and a new bag without that tile.
 		/// </returns>
-		public (Tile, Bag) TakeTile()
+		public (ITile, Bag) TakeTile()
 		{
 			return (
 					Tiles.Span[DiscardedTiles],

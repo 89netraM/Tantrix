@@ -3,9 +3,9 @@
 namespace Tantrix
 {
 	/// <summary>
-	/// A tile.
+	/// An immutable representation of a tantrix tile.
 	/// </summary>
-	public readonly struct Tile
+	public readonly struct Tile : ITile
 	{
 		#region Factory Methods
 
@@ -91,14 +91,10 @@ namespace Tantrix
 
 		#endregion Factory Methods
 
-		/// <summary>
-		/// The colors of the six sides in clockwise order.
-		/// </summary>
+		/// <inheritdoc/>
 		public ReadOnlyMemory<Color> Sides { get; }
 
-		/// <summary>
-		/// Represetns all colors on this tile.
-		/// </summary>
+		/// <inheritdoc/>
 		public Color Colors
 		{
 			get

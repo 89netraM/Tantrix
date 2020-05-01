@@ -97,6 +97,24 @@ namespace Tantrix
 		public ReadOnlyMemory<Color> Sides { get; }
 
 		/// <summary>
+		/// Represetns all colors on this tile.
+		/// </summary>
+		public Color Colors
+		{
+			get
+			{
+				Color colors = 0b000;
+
+				for (int i = 0; i < Sides.Length; i++)
+				{
+					colors |= Sides.Span[i];
+				}
+
+				return colors;
+			}
+		}
+
+		/// <summary>
 		/// Initializes a new immutable tile.
 		/// </summary>
 		/// <param name="sides">

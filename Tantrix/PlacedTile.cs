@@ -37,5 +37,11 @@ namespace Tantrix
 			BaseTile = baseTile ?? throw new ArgumentNullException(nameof(baseTile));
 			Rotation = rotation;
 		}
+
+		/// <inheritdoc/>
+		public Color GetSide(int index)
+		{
+			return BaseTile.GetSide((Rotation + index) % 6);
+		}
 	}
 }

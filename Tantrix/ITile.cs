@@ -16,5 +16,12 @@ namespace Tantrix
 		/// Represetns all colors on this tile.
 		/// </summary>
 		Color Colors { get; }
+
+		/// <summary>
+		/// Gets the color of one of the sides, starting at the top going
+		/// clockwise.
+		/// </summary>
+		/// <param name="index">A zero-indexed side [0, 6).</param>
+		Color GetSide(int index);
 	}
 }

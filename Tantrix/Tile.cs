@@ -127,5 +127,19 @@ namespace Tantrix
 
 			Sides = sides;
 		}
+
+		/// <inheritdoc/>
+		/// <exception cref="IndexOutOfRangeException"/>
+		public Color GetSide(int index)
+		{
+			try
+			{
+				return Sides.Span[index];
+			}
+			catch (IndexOutOfRangeException ex)
+			{
+				throw new IndexOutOfRangeException("Tiles have 6 sides.", ex);
+			}
+		}
 	}
 }

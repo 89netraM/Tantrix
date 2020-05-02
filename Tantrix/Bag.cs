@@ -1,9 +1,25 @@
 ﻿using System;
+using System.Linq;
 
 namespace Tantrix
 {
 	public readonly struct Bag
 	{
+		/// <summary>
+		/// Creates a shuffled and fully packed standard bag of Tantrix tiles.
+		/// </summary>
+		public static Bag CreateStandardBag()
+		{
+			ITile[] tiles = new ITile[Tile.StandardTiles.Length];
+			Random rand = new Random();
+			foreach ((int r, int i) item in Enumerable.Range(0, Tile.StandardTiles.Length).OrderBy(rand.Next).Zip(Enumerable.Range(0, Tile.StandardTiles.Length), (r, i) => (r, i)))
+			{
+				tiles[item.i] = Tile.GetNumberedTile(item.r);
+			}
+
+			return new Bag(tiles);
+		}
+
 		/// <summary>
 		/// The number of discarded tiles.
 		/// Also points a the next tile in this bag.

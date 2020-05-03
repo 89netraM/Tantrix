@@ -53,13 +53,13 @@ namespace Tantrix
 
 			PlacedTile newTile = new PlacedTile(tile, rotation);
 
-			ReadOnlyMemory<Color> limits = GetLimitsFor(position);
+			Color[] limits = GetLimitsFor(position);
 			Color combinedLimits = (Color)0b1111;
 			for (int i = 0; i < 6; i++)
 			{
-				combinedLimits ^= limits.Span[i];
+				combinedLimits ^= limits[i];
 
-				if ((newTile.GetSide(i) & limits.Span[i]) == 0)
+				if ((newTile.GetSide(i) & limits[i]) == (Color)0b0000)
 				{
 					throw new InvalidPositionException("Must color match when placing tiles.");
 				}
@@ -76,7 +76,7 @@ namespace Tantrix
 		/// Returns the limits on tiles placed a the specified position.
 		/// </summary>
 		/// <param name="position">The position to get the limits of.</param>
-		public ReadOnlyMemory<Color> GetLimitsFor(Position position)
+		public Color[] GetLimitsFor(Position position)
 		{
 			Color[] limits = new Color[6];
 			ReadOnlySpan<Position> neighbours = position.GetSurroundingPositions().Span;

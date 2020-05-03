@@ -46,7 +46,7 @@ namespace Tantrix
 		/// Returns the six positions surrounding this position. In clockwise
 		/// order starting at the top.
 		/// </summary>
-		public ReadOnlyMemory<Position> GetSurroundingPositions()
+		public Position[] GetSurroundingPositions()
 		{
 			return new[]
 			{

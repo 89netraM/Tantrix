@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Immutable;
 
 namespace Tantrix
@@ -57,7 +57,7 @@ namespace Tantrix
 			Color combinedLimits = (Color)0b1111;
 			for (int i = 0; i < 6; i++)
 			{
-				combinedLimits ^= limits[i];
+				combinedLimits &= limits[i];
 
 				if ((newTile.GetSide(i) & limits[i]) == (Color)0b0000)
 				{

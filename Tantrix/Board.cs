@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Immutable;
 
 namespace Tantrix
@@ -53,7 +53,7 @@ namespace Tantrix
 
 			PlacedTile newTile = new PlacedTile(tile, rotation);
 
-			Color[] limits = GetLimitsFor(position);
+			Color[] limits = GetLimitsAt(position);
 			Color combinedLimits = (Color)0b1111;
 			for (int i = 0; i < 6; i++)
 			{
@@ -73,21 +73,74 @@ namespace Tantrix
 		}
 
 		/// <summary>
-		/// Returns the limits on tiles placed a the specified position.
+		/// Returns the valid color connections for the specified position.
 		/// </summary>
-		/// <param name="position">The position to get the limits of.</param>
-		public Color[] GetLimitsFor(Position position)
+		/// <param name="position">
+		/// The position to get the color connections of.
+		/// </param>
+		public Color[] GetConnectingColorsAt(Position position)
 		{
-			Color[] limits = new Color[6];
-			ReadOnlySpan<Position> neighbours = position.GetSurroundingPositions().Span;
+			return GetConnectingColorsAt(position, position.GetSurroundingPositions());
+		}
+		/// <summary>
+		/// Returns the valid color connections for the specified position.
+		/// </summary>
+		/// <param name="position">
+		/// The position to get the color connections of.
+		/// </param>
+		/// <param name="neighbours">The surrounding positions.</param>
+		public Color[] GetConnectingColorsAt(Position position, Position[] neighbours)
+		{
+			Color[] colors = new Color[6];
 
 			for (int i = 0; i < 6; i++)
 			{
-				limits[i] = (Color)0b1111;
+				colors[i] = (Color)0b1111;
 
 				if (Tiles.TryGetValue(neighbours[i], out PlacedTile neighbourTile))
 				{
-					limits[i] &= neighbourTile.GetSide((i + 3) % 6);
+					colors[i] &= neighbourTile.GetSide((i + 3) % 6);
+				}
+			}
+
+			return colors;
+		}
+
+		/// <summary>
+		/// Returns the limits on the sides for the specified position.
+		/// </summary>
+		/// <param name="position">
+		/// The position to get the limits of.
+		/// </param>
+		public Color[] GetLimitsAt(Position position)
+		{
+			return GetLimitsAt(position, position.GetSurroundingPositions());
+		}
+		/// <summary>
+		/// Returns the limits on the sides for the specified position.
+		/// </summary>
+		/// <param name="position">
+		/// The position to get the limits of.
+		/// </param>
+		/// <param name="neighbours">The surrounding positions.</param>
+		public Color[] GetLimitsAt(Position position, Position[] neighbours)
+		{
+			Color[] limits = GetConnectingColorsAt(position, neighbours);
+
+			for (int i = 0; i < 6; i++)
+			{
+				if (limits[i] == (Color)0b1111 && !Tiles.ContainsKey(neighbours[i]))
+				{
+					Color[] colors = GetConnectingColorsAt(neighbours[i]);
+
+					for (int j = 1; j < colors.Length; j++)
+					{
+						if (colors[j] != (Color)0b1111 && colors[j - 1] == colors[j])
+						{
+							limits[i] ^= colors[j];
+							break;
+						}
+					}
 				}
 			}
 
